@@ -11,16 +11,25 @@ class RackTTT
     @game = game
     @web_game = web_game
     @html = HTML.new
-    @game_controller = GameController.new(@html, @web_game, @game)
-    @pre_game_controller = PreGameController.new(@html)
+    @pre_game_controller = PreGameController.new(@html, @web_game)
+    @not_set_up = true
   end
 
   def call(env)
     case env['PATH_INFO']
       when '/move'
+        set_up_game if @not_set_up 
         @game_controller.manage_move(env)
       else
         @pre_game_controller.parse(env)
     end
+  end
+
+  private
+
+  def set_up_game
+    @game = @pre_game_controller.game if @pre_game_controller.game_ready
+    @game_controller = GameController.new(@html, @web_game, @game)
+    @not_set_up = false
   end
 end

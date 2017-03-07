@@ -2,8 +2,13 @@ require 'game_creator'
 require 'modes'
 
 class PreGameController
-  def initialize(html)
+  attr_reader :game
+  attr_reader :game_ready
+  
+  def initialize(html, web_game)
     @html = html
+    @web_game = web_game
+    @game_ready = false
   end
 
   def parse(env)
@@ -26,5 +31,6 @@ class PreGameController
     game_creator = GameCreator.new(@web_game)
     @game = game_creator.create
     @game.start
+    @game_ready = true
   end
 end
