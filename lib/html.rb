@@ -40,6 +40,6 @@ class HTML
 
   def cells(line, row)
     start = row * 3
-    line.to_enum.with_index(start).map {|cell, id|"<td><a class='marks' href='/move?number=#{id}'> #{cell} </a></td>" }.join
+    line.to_enum.with_index(start).map {|cell, id|"<td><a class='marks' href='/move?cell=#{id}'> #{cell} </a></td>" }.join
   end
 end
