@@ -1,29 +1,26 @@
 require 'cgi'
 require 'html'
 require 'web_game'
-require 'game'
-require 'web_player'
+require 'game_controller'
+require 'pre_game_controller'
 
 class RackTTT
   attr_reader :game
 
-  def initialize
-    @web_game = WebGame.new
-    @game = Game.new(Board.new, WebPlayer.new('x'), WebPlayer.new('o'), @web_game)
-    @web_game.start(@game)
+  def initialize(game = nil, web_game = WebGame.new)
+    @game = game
+    @web_game = web_game
+    @html = HTML.new
+    @game_controller = GameController.new(@html, @web_game, @game)
+    @pre_game_controller = PreGameController.new(@html)
   end
 
   def call(env)
-    make_move(env["QUERY_STRING"]) if env['PATH_INFO'] == '/move'
-    html = HTML.new(@game.board)
-    ['200', {'Content-Type' => 'text/html'}, [html.header + html.body(html.create_board)]]
-  end
-
-  private
-
-  def make_move(query_string)
-    values = CGI.parse(query_string)
-    cell = values['cell'].first
-    @web_game.cell_pressed(cell)
+    case env['PATH_INFO']
+      when '/move'
+        @game_controller.manage_move(env)
+      else
+        @pre_game_controller.parse(env)
+    end
   end
 end

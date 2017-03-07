@@ -1,8 +1,15 @@
 require 'rack_ttt'
+require 'board'
+require 'web_player'
+require 'game'
+require 'web_game'
 
 RSpec.describe RackTTT do
   before (:each) do
-    @rack_ttt = RackTTT.new
+    web_game = WebGame.new
+    @game = Game.new(Board.new, WebPlayer.new('x'), WebPlayer.new('o'), @web_game)
+    web_game.start(@game)
+    @rack_ttt = RackTTT.new(@game, web_game)
     @enviroment = {}
     @enviroment['PATH_INFO'] = "/move"
     @enviroment['QUERY_STRING'] = "cell=1"
@@ -18,6 +25,6 @@ RSpec.describe RackTTT do
 
   it "makes a move when the query string is move" do
     @rack_ttt.call(@enviroment)
-    expect(@rack_ttt.game.board.cells[1]).to eq('x')
+    expect(@game.board.cells[1]).to eq('x')
   end
 end

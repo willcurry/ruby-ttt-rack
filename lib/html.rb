@@ -1,6 +1,15 @@
 class HTML 
-  def initialize(board)
-    @board = board
+  def initialize
+  end
+
+  def game_options
+    "<form> 
+      Size:<br>
+      <input type='number' name='board_size'><br>
+      Mode:<br>
+      <input type='number' name='mode'><br>
+      <input type='submit' value='Submit'>
+    </form>"
   end
 
   def header
@@ -29,17 +38,17 @@ class HTML
     "<body>#{content}</body></html>"
   end
 
-  def create_board
-    "<table><tbody>" + rows + "</tbody></table>" 
+  def create_board(board)
+    "<table><tbody>" + rows(board) + "</tbody></table>" 
   end
 
-  def rows
-    lines = @board.cells.each_slice(3).to_a
-    lines.each_with_index.map { |line, index| "<tr>" + cells(line, index) + "</tr>" }.join
+  def rows(board)
+    lines = board.cells.each_slice(board.dimension).to_a
+    lines.each_with_index.map { |line, index| "<tr>" + cells(line, index, board.dimension) + "</tr>" }.join
   end
 
-  def cells(line, row)
-    start = row * 3
+  def cells(line, row, dimension)
+    start = row * dimension
     line.to_enum.with_index(start).map {|cell, id|"<td><a class='marks' href='/move?cell=#{id}'> #{cell} </a></td>" }.join
   end
 end
