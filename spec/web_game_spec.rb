@@ -6,6 +6,7 @@ RSpec.describe WebGame do
   before (:each) do
     @web_game = WebGame.new
     @game = Game.new(Board.new, WebPlayer.new('x'), WebPlayer.new('o'), @web_game)
+    @web_game.set_controller(GameController.new(@web_game, @game))
   end
 
   it "cell pressed makes a move" do

@@ -8,6 +8,10 @@ class WebGame
     requested_mode = 1
   end
 
+  def set_controller(controller)
+    @controller = controller
+  end
+
   def cell_pressed(cell)
     return if !@game.active_player.kind_of?(WebPlayer)
     @game.active_player.user_input = cell
@@ -23,10 +27,15 @@ class WebGame
     requested_mode
   end
 
+  def display_board(board)
+    @controller.update_display
+  end
+
   private
 
   def end_game
     @game.end
     recording = @game.recording
+    recording.play
   end
 end

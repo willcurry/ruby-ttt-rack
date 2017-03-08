@@ -1,6 +1,9 @@
+require 'rack'
+
 class GameController
   def initialize(web_game, game)
     @web_game = web_game
+    @web_game.set_controller(self)
     @game = game
     @game.start
   end
@@ -8,6 +11,12 @@ class GameController
   def manage_move(env)
     make_move(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
     ['200', {}, view]
+  end
+
+  def update_display
+    response = Rack::Response.new
+    response.redirect('/move')
+    response.finish
   end
 
   private 
