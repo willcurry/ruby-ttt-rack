@@ -6,30 +6,37 @@ require 'web_game'
 
 RSpec.describe RackTTT do
   def setup(path, query)
-    web_game = WebGame.new
-    @game = Game.new(Board.new, WebPlayer.new('x'), WebPlayer.new('o'), @web_game)
-    web_game.start(@game)
-    @rack_ttt = RackTTT.new(@game, web_game)
-    @enviroment = {}
-    @enviroment['PATH_INFO'] = path
-    @enviroment['QUERY_STRING'] = query
+    @web_game = WebGame.new
+    @rack_ttt = RackTTT.new(@game, @web_game)
+    @enviroment = generate_enviroment(path, query)
+  end
+
+  def generate_enviroment(path, query)
+    enviroment = {}
+    enviroment['PATH_INFO'] = path
+    enviroment['QUERY_STRING'] = query
+    enviroment
   end
 
   it "returns 200 http response" do
-    setup("/move", "cell=1")
-    expect(@rack_ttt.call(@enviroment).first).to eq('200')
+    setup("/", "board_size=3&mode=1")
+    @rack_ttt.call(@enviroment)
+    env = generate_enviroment("/move", "cell=1")
+    expect(@rack_ttt.call(env).first).to eq('200')
   end
 
   it "makes a move when the query string is move" do
-    setup("/move", "cell=1")
+    setup("/", "board_size=3&mode=1")
     @rack_ttt.call(@enviroment)
-    expect(@game.board.cells[1]).to eq('x')
+    env = generate_enviroment("/move", "cell=1")
+    @rack_ttt.call(env)
+    expect(@rack_ttt.game.board.cells[1]).to eq('x')
   end
 
   it "can create a game" do
     setup("/", "board_size=3&mode=1")
     @rack_ttt.call(@enviroment)
-    expect(@rack_ttt.game.board.dimension).to eq(3)
-    expect(@rack_ttt.game.active_player).to be_a(WebPlayer)
+    expect(@web_game.board_size).to eq(3)
+    expect(@web_game.requested_mode).to eq(1)
   end
 end
