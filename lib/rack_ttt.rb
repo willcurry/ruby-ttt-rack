@@ -26,7 +26,7 @@ class RackTTT
   private
 
   def set_up_game
-    @game = @pre_game_controller.game if @pre_game_controller.game_ready
+    @game = @pre_game_controller.game 
     @game_controller = GameController.new(@web_game, @game)
     @not_set_up = false
   end
