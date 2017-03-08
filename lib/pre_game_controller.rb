@@ -5,8 +5,7 @@ class PreGameController
   attr_reader :game
   attr_reader :game_ready
   
-  def initialize(html, web_game)
-    @html = html
+  def initialize(web_game)
     @web_game = web_game
     @game_ready = false
   end

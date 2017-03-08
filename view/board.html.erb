@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>RackTTT - Game</title>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <table>
+      <tdbody>
+        <%lines = board.cells.each_slice(board.dimension).to_a%>
+        <%lines.each_with_index do |line, row|%>
+          <tr>
+            <%start = row * board.dimension%>
+            <%line.to_enum.with_index(start) do |cell, index|%>
+              <td>
+                <a class='marks' href='/move?cell=<%=index%>'><%= cell %></a>
+              </td>
+            <%end%>
+          </tr>
+        <%end%>
+      </tdbody>
+    </table>
+  </body>
+</html>

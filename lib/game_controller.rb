@@ -1,13 +1,15 @@
 class GameController
-  def initialize(html, web_game, game)
-    @html = html
+  def initialize(web_game, game)
     @web_game = web_game
     @game = game
   end
 
   def manage_move(env)
     make_move(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
-    ['200', {'Content-Type' => 'text/html'}, [@html.header + @html.body(@html.create_board(@game.board))]]
+    board_binding = binding
+    board_binding.local_variable_set(:board, @game.board)
+    path = File.expand_path('view/board.html.erb')
+    ['200', {}, [ERB.new(File.read(path)).result(board_binding)]]
   end
 
   def make_move(query_string)

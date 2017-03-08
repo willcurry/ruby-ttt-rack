@@ -20,11 +20,6 @@ RSpec.describe RackTTT do
     expect(@rack_ttt.call(@enviroment).first).to eq('200')
   end
 
-  it "returns the content type of text/html" do
-    setup("/move", "cell=1")
-    expect(@rack_ttt.call(@enviroment)[1]['Content-Type']).to eq('text/html')
-  end
-
   it "makes a move when the query string is move" do
     setup("/move", "cell=1")
     @rack_ttt.call(@enviroment)
