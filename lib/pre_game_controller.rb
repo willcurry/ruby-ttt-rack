@@ -4,6 +4,11 @@ require 'modes'
 class PreGameController
   def initialize(web_game)
     @web_game = web_game
+    @ready = false
+  end
+
+  def ready?
+    @ready
   end
 
   def parse(env)
@@ -11,7 +16,7 @@ class PreGameController
     ['200', {}, view]
   end
 
-  def game
+  def create_game
     game_creator = GameCreator.new(@web_game)
     game_creator.create
   end
@@ -27,5 +32,6 @@ class PreGameController
     values = CGI.parse(query_string)
     @web_game.board_size = values['board_size'].first.to_i
     @web_game.requested_mode = values['mode'].first.to_i
+    @ready = true
   end
 end

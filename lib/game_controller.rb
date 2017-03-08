@@ -2,6 +2,7 @@ class GameController
   def initialize(web_game, game)
     @web_game = web_game
     @game = game
+    @game.start
   end
 
   def manage_move(env)
@@ -9,13 +10,13 @@ class GameController
     ['200', {}, view]
   end
 
+  private 
+
   def make_move(query_string)
     values = CGI.parse(query_string)
     cell = values['cell'].first
     @web_game.cell_pressed(cell)
   end
-
-  private 
 
   def view
     board_binding = binding
