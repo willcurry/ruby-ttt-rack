@@ -9,8 +9,10 @@ class WebGame
   end
 
   def cell_pressed(cell)
+    return if !@game.active_player.kind_of?(WebPlayer)
     @game.active_player.user_input = cell
     @game.handle_input
+    end_game if @game.is_over?
   end
 
   def ask_for_board_size
@@ -19,5 +21,12 @@ class WebGame
 
   def ask_for_mode
     requested_mode
+  end
+
+  private
+
+  def end_game
+    @game.end
+    recording = @game.recording
   end
 end

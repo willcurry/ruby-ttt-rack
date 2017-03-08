@@ -16,7 +16,8 @@ class PreGameController
       update_options(env['QUERY_STRING'])
       start_game
     end
-    ['200', {'Content-Type' => 'text/html'}, [@html.header + @html.body(@html.game_options)]]
+    path = File.expand_path('view/index.html.erb')
+    ['200', {}, [ERB.new(File.read(path)).result]]
   end
 
   private

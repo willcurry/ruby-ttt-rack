@@ -18,7 +18,7 @@ class RackTTT
   def call(env)
     case env['PATH_INFO']
       when '/move'
-        set_up_game if @not_set_up 
+        set_up_game if @not_set_up || @game.is_over?
         @game_controller.manage_move(env)
       else
         @pre_game_controller.parse(env)

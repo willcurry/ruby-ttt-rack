@@ -1,17 +1,4 @@
 class HTML 
-  def initialize
-  end
-
-  def game_options
-    "<form> 
-      Size:<br>
-      <input type='number' name='board_size'><br>
-      Mode:<br>
-      <input type='number' name='mode'><br>
-      <input type='submit' value='Submit'>
-    </form>"
-  end
-
   def header
     "<!doctype html><html lang=''><head><meta charset='utf-8'><title></title>\ #{css}</head>"
   end
