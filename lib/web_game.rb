@@ -28,7 +28,7 @@ class WebGame
   end
 
   def display_board(board)
-    @controller.update_display
+    @controller.update_view
   end
 
   private

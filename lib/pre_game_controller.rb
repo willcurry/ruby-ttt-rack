@@ -1,5 +1,6 @@
 require 'game_creator'
 require 'modes'
+require 'view'
 
 class PreGameController
   def initialize(web_game)
@@ -13,7 +14,7 @@ class PreGameController
 
   def parse(env)
     update_options(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
-    ['200', {}, view]
+    ['200', {}, View.home]
   end
 
   def create_game
@@ -22,11 +23,6 @@ class PreGameController
   end
 
   private
-
-  def view
-    path = File.expand_path('view/index.html.erb')
-    [ERB.new(File.read(path)).result]
-  end
 
   def update_options(query_string)
     values = CGI.parse(query_string)

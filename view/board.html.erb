@@ -4,6 +4,11 @@
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <h1>RackTTT</h1>
+    <a href='/'>Setup A New Game</a>
+    <%if board.is_over?%>
+      <h2><%= board.is_won? ? "#{board.last_move} has won the game!": "The game is a draw"%></h2>
+    <%end%>
     <table>
       <tdbody>
         <%lines = board.cells.each_slice(board.dimension).to_a%>
@@ -19,6 +24,5 @@
         <%end%>
       </tdbody>
     </table>
-    <a href='/'>Play Again</a>
   </body>
 </html>

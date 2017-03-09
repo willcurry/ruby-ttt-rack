@@ -14,6 +14,7 @@ RSpec.describe GameController do
     web_game = WebGame.new
     @game = Game.new(Board.new, WebPlayer.new('x'), WebPlayer.new('o'), web_game)
     @controller = GameController.new(web_game, @game)
+    web_game.set_controller(@controller)
   end
 
   it "returns a correct response" do

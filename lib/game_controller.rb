@@ -1,4 +1,5 @@
 require 'rack'
+require 'view'
 
 class GameController
   def initialize(web_game, game)
@@ -10,10 +11,10 @@ class GameController
 
   def manage_move(env)
     make_move(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
-    ['200', {}, view]
+    ['200', {}, View.board(@game.board)]
   end
 
-  def update_display
+  def update_view
     response = Rack::Response.new
     response.redirect('/move')
     response.finish
@@ -25,12 +26,5 @@ class GameController
     values = CGI.parse(query_string)
     cell = values['cell'].first
     @web_game.cell_pressed(cell)
-  end
-
-  def view
-    board_binding = binding
-    board_binding.local_variable_set(:board, @game.board)
-    path = File.expand_path('view/board.html.erb')
-    [ERB.new(File.read(path)).result(board_binding)]
   end
 end

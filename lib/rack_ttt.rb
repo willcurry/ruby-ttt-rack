@@ -13,7 +13,7 @@ class RackTTT
   end
 
   def call(env)
-    set_up_game if @pre_game_controller.ready? && @game.nil?
+    set_up_game if @pre_game_controller.ready? && no_current_game
     case env['PATH_INFO']
       when '/move'
         @game_controller.manage_move(env)
@@ -23,6 +23,10 @@ class RackTTT
   end
 
   private
+
+  def no_current_game
+    @game.nil? || @game.is_over?
+  end
 
   def set_up_game
     @game = @pre_game_controller.create_game
