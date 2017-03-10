@@ -1,18 +1,28 @@
+require 'rack'
+require 'view'
+
 class GameController
-  def initialize(html, web_game, game)
-    @html = html
+  def initialize(web_game, game)
     @web_game = web_game
     @game = game
+    @game.start
   end
 
   def manage_move(env)
-    make_move(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
-    ['200', {'Content-Type' => 'text/html'}, [@html.header + @html.body(@html.create_board(@game.board))]]
+    give_input(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
+    ['200', {}, View.board(@game.board)]
   end
 
-  def make_move(query_string)
+  def play_recording(recording)
+    @game = recording.get
+    Thread.new{@game.start}
+  end
+
+  private 
+
+  def give_input(query_string)
     values = CGI.parse(query_string)
     cell = values['cell'].first
-    @web_game.cell_pressed(cell)
+    @web_game.button_pressed(cell)
   end
 end

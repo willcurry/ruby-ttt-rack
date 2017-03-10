@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>RackTTT - Game</title>
+    <%if !board.is_over?%>
+      <meta http-equiv="refresh" content="2;url=/move" />
+    <%else%>
+      <meta http-equiv="refresh" content="4;url=/end" />
+    <%end%>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <h1>RackTTT</h1>
+    <%if board.is_over?%>
+      <h2><%= board.is_won? ? "#{board.last_move} has won the game!": "The game is a draw"%></h2>
+    <%end%>
+    <table>
+      <tdbody>
+        <%lines = board.cells.each_slice(board.dimension).to_a%>
+        <%lines.each_with_index do |line, row|%>
+          <tr>
+            <%start = row * board.dimension%>
+            <%line.to_enum.with_index(start) do |cell, index|%>
+              <td>
+                <a class='marks' href='/move?cell=<%=index%>'><%= cell %></a>
+              </td>
+            <%end%>
+          </tr>
+        <%end%>
+      </tdbody>
+    </table>
+    <a class='marks' href='/move?cell=undo'>Undo</a>
+    <a class='marks' href='/move?cell=redo'>Redo</a>
+  </body>
+</html>

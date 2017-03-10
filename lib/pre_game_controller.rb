@@ -1,17 +1,26 @@
 require 'game_creator'
 require 'modes'
+require 'view'
 
 class PreGameController
-  def initialize(html)
-    @html = html
+  def initialize(web_game)
+    @web_game = web_game
+    @ready = false
   end
 
-  def parse(env)
-     if env['QUERY_STRING'] != ""
-      update_options(env['QUERY_STRING'])
-      start_game
-    end
-    ['200', {'Content-Type' => 'text/html'}, [@html.header + @html.body(@html.game_options)]]
+  def ready?
+    @ready
+  end
+
+  def parse_options(env)
+    update_options(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
+    ['200', {}, View.home]
+  end
+
+  def create_game
+    @ready = false
+    game_creator = GameCreator.new(@web_game)
+    game_creator.create
   end
 
   private
@@ -20,11 +29,6 @@ class PreGameController
     values = CGI.parse(query_string)
     @web_game.board_size = values['board_size'].first.to_i
     @web_game.requested_mode = values['mode'].first.to_i
-  end
-
-  def start_game
-    game_creator = GameCreator.new(@web_game)
-    @game = game_creator.create
-    @game.start
+    @ready = true
   end
 end
