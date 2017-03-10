@@ -9,7 +9,7 @@ class GameController
   end
 
   def manage_move(env)
-    make_move(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
+    give_input(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
     ['200', {}, View.board(@game.board)]
   end
 
@@ -20,9 +20,9 @@ class GameController
 
   private 
 
-  def make_move(query_string)
+  def give_input(query_string)
     values = CGI.parse(query_string)
     cell = values['cell'].first
-    @web_game.cell_pressed(cell)
+    @web_game.button_pressed(cell)
   end
 end

@@ -21,9 +21,9 @@ class WebGame
     @ended
   end
 
-  def cell_pressed(cell)
+  def button_pressed(button)
     return if !@game.active_player.kind_of?(WebPlayer)
-    @game.active_player.user_input = cell
+    @game.active_player.user_input = button
     @game.handle_input
   end
 
