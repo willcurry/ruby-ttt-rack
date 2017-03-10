@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title RackTTT - Game
+    - if !board.is_over?
+      meta content="2;url=/move" http-equiv="refresh" /
+    - else
+      meta content="4;url=/end" http-equiv="refresh" /
+    link href="/css/style.css" rel="stylesheet" type="text/css" /
+  body
+    h1 RackTTT
+    - if board.is_over?
+      h2= board.is_won? ? "#{board.last_move} has won the game!": "The game is a draw"
+    table
+      tdbody
+        - lines = board.cells.each_slice(board.dimension).to_a
+        - lines.each_with_index do |line, row|
+          tr
+            - start = row * board.dimension
+            - line.to_enum.with_index(start) do |cell, index|
+              td
+                a.marks href="/move?cell=#{index}" = cell
+    a.marks href="/move?cell=undo"  Undo
+    a.marks href="/move?cell=redo"  Redo

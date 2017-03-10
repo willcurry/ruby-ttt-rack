@@ -1,0 +1,20 @@
+html
+  head
+    title
+      | RackTTT - End
+    link[href="/css/style.css" rel="stylesheet" type="text/css"]
+  body
+    a[href="/"]
+      | Setup A New Game
+    br
+    h3
+      | Rewatch A Game
+    br
+    - catalogue.games.each_with_index do |game, index|
+      |  <a href="/end?game=
+      = index
+      | ">
+      = game[:time]
+      br
+    a[href="/move"]
+      | Play

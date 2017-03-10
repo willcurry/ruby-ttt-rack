@@ -1,0 +1,23 @@
+html
+  head
+    title
+      | RackTTT
+    link[href="/css/style.css" rel="stylesheet" type="text/css"]
+  body
+    form
+      |  Size:
+      br
+      input[type="number" name="board_size"]
+      br
+      |  Mode:
+      br
+      input[type="number" name="mode"]
+      br
+      input[type="submit" value="Update"]
+      a[href="/move"]
+        | Play
+    h3
+      | Modes
+    - modes.each do |mode|
+      p
+        = "#{mode.key}) #{mode.name}"
