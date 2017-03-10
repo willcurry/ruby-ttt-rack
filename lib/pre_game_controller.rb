@@ -12,12 +12,13 @@ class PreGameController
     @ready
   end
 
-  def parse(env)
+  def parse_options(env)
     update_options(env['QUERY_STRING']) if env['QUERY_STRING'] != ""
     ['200', {}, View.home]
   end
 
   def create_game
+    @ready = false
     game_creator = GameCreator.new(@web_game)
     game_creator.create
   end

@@ -1,22 +1,30 @@
+require 'game_catalogue'
+
 class WebGame
   attr_accessor :board_size
   attr_accessor :requested_mode
+  attr_accessor :game_catalogue
+
+  def initialize
+    @game_catalogue = GameCatalogue.new
+  end
 
   def start(game)
+    @ended = false
     @game = game
     board_size = 3
     requested_mode = 1
+    @game.handle_input if @game.active_player.kind_of?(ComputerPlayer) || @game.active_player.kind_of?(ActorPlayer)
   end
 
-  def set_controller(controller)
-    @controller = controller
+  def ended?
+    @ended
   end
 
   def cell_pressed(cell)
     return if !@game.active_player.kind_of?(WebPlayer)
     @game.active_player.user_input = cell
     @game.handle_input
-    end_game if @game.is_over?
   end
 
   def ask_for_board_size
@@ -27,15 +35,9 @@ class WebGame
     requested_mode
   end
 
-  def display_board(board)
-    @controller.update_view
-  end
-
-  private
-
   def end_game
+    @ended = true
     @game.end
-    recording = @game.recording
-    recording.play
+    @game_catalogue.add(@game.recording) if !@game.active_player.kind_of?(ActorPlayer)
   end
 end

@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>RackTTT - End</title>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+     <a href='/'>Setup A New Game</a>
+     <br>
+       <h3>Rewatch A Game</h3>
+     <br>
+     <%game_catalogue.games.each_with_index do |game, index|%>
+       <a href="/end?game=<%= index %>"><%= game[:time] %></a>
+       <br>
+     <%end%>
+     <a href="/move">Play</a>
+  </body>
+</html>

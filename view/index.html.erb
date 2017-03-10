@@ -12,5 +12,9 @@
       <input type='submit' value='Update'>
       <a href='/move'>Play</a>
     </form>
+    <h3>Modes</h3>
+    <%modes.each do |mode|%>
+      <p><%= "#{mode.key}) #{mode.name}" %></p>
+    <%end%>
   </body>
 </html>

@@ -4,7 +4,6 @@ require 'view'
 class GameController
   def initialize(web_game, game)
     @web_game = web_game
-    @web_game.set_controller(self)
     @game = game
     @game.start
   end
@@ -14,10 +13,9 @@ class GameController
     ['200', {}, View.board(@game.board)]
   end
 
-  def update_view
-    response = Rack::Response.new
-    response.redirect('/move')
-    response.finish
+  def play_recording(recording)
+    @game = recording.get
+    Thread.new{@game.start}
   end
 
   private 

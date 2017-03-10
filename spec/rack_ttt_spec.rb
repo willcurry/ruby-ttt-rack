@@ -18,13 +18,6 @@ RSpec.describe RackTTT do
     enviroment
   end
 
-  it "returns 200 http response" do
-    setup("/", "board_size=3&mode=1")
-    @rack_ttt.call(@enviroment)
-    env = generate_enviroment("/move", "cell=1")
-    expect(@rack_ttt.call(env).first).to eq('200')
-  end
-
   it "makes a move when the query string is move" do
     setup("/", "board_size=3&mode=1")
     @rack_ttt.call(@enviroment)

@@ -2,6 +2,7 @@ require 'cgi'
 require 'web_game'
 require 'game_controller'
 require 'pre_game_controller'
+require 'end_game_controller'
 
 class RackTTT
   attr_reader :game
@@ -17,19 +18,22 @@ class RackTTT
     case env['PATH_INFO']
       when '/move'
         @game_controller.manage_move(env)
+      when '/end'
+        @end_game_controller.parse_options(env)
       else
-        @pre_game_controller.parse(env)
+        @pre_game_controller.parse_options(env)
     end
   end
 
   private
 
   def no_current_game
-    @game.nil? || @game.is_over?
+    @game.nil? || @web_game.ended?
   end
 
   def set_up_game
     @game = @pre_game_controller.create_game
     @game_controller = GameController.new(@web_game, @game)
+    @end_game_controller = EndGameController.new(@web_game, @game_controller)
   end
 end
